@@ -32,7 +32,6 @@ const APOD: React.FC = () => {
 
   const handleStartDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setStartDate(e.target.value);
-    throw new Error("Not implemented yet");
   };
 
   const handleEndDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -46,16 +45,20 @@ const APOD: React.FC = () => {
     return afterStart && beforeEnd;
   });
 
+  const themeClasses = {
+    container: theme === "dark" ? "bg-gray-900" : "bg-white",
+    text: theme === "dark" ? "text-white" : "text-gray-800",
+    label: theme === "dark" ? "text-gray-300" : "text-gray-700",
+    input:
+      theme === "dark"
+        ? "bg-gray-800 border-gray-600 text-white"
+        : "bg-white border-gray-300 text-gray-800",
+  };
+
   const APODWithLoading = withLoading(() => (
-    <div
-      className={`min-h-screen p-6 ${
-        theme === "dark" ? "bg-gray-900" : "bg-white"
-      }`}
-    >
+    <div className={`min-h-screen ${themeClasses.container}`}>
       <h1
-        className={`text-3xl font-bold mb-8 text-center ${
-          theme === "dark" ? "text-white" : "text-gray-800"
-        }`}
+        className={`text-3xl font-bold mb-8 text-center ${themeClasses.text}`}
       >
         Astronomy Picture of the Day
       </h1>
@@ -65,9 +68,7 @@ const APOD: React.FC = () => {
           <div>
             <label
               htmlFor="start-date"
-              className={`block mb-2 text-sm font-medium ${
-                theme === "dark" ? "text-white" : "text-gray-700"
-              }`}
+              className={`block mb-2 text-sm font-medium ${themeClasses.label}`}
             >
               Start Date:
             </label>
@@ -76,19 +77,13 @@ const APOD: React.FC = () => {
               type="date"
               value={startDate}
               onChange={handleStartDateChange}
-              className={`w-full p-2 rounded-md border ${
-                theme === "dark"
-                  ? "bg-gray-700 border-gray-600 text-white"
-                  : "bg-white border-gray-300 text-gray-900"
-              }`}
+              className={`w-full p-2 rounded-md border ${themeClasses.input}`}
             />
           </div>
           <div>
             <label
               htmlFor="end-date"
-              className={`block mb-2 text-sm font-medium ${
-                theme === "dark" ? "text-white" : "text-gray-700"
-              }`}
+              className={`block mb-2 text-sm font-medium ${themeClasses.label}`}
             >
               End Date:
             </label>
@@ -97,11 +92,7 @@ const APOD: React.FC = () => {
               type="date"
               value={endDate}
               onChange={handleEndDateChange}
-              className={`w-full p-2 rounded-md border ${
-                theme === "dark"
-                  ? "bg-gray-700 border-gray-600 text-white"
-                  : "bg-white border-gray-300 text-gray-900"
-              }`}
+              className={`w-full p-2 rounded-md border ${themeClasses.input}`}
             />
           </div>
         </div>
