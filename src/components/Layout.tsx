@@ -7,7 +7,7 @@ const Layout: React.FC = () => {
 
   return (
     <div
-      className={`min-h-screen flex flex-col gap-16 ${
+      className={`min-h-screen flex flex-col gap-12 ${
         theme === "dark" ? "bg-gray-900 text-white" : "bg-white text-gray-900"
       }`}
     >

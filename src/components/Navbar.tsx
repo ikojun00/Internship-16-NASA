@@ -59,35 +59,35 @@ const Navbar: React.FC = () => {
         <div className="mt-2 md:hidden">
           <Link
             to="/apod"
-            className="block py-2 px-4 hover:bg-blue-700"
+            className="block py-2 px-4 hover:bg-blue-800"
             onClick={() => setIsMenuOpen(false)}
           >
             APOD
           </Link>
           <Link
             to="/mars-rover"
-            className="block py-2 px-4 hover:bg-blue-700"
+            className="block py-2 px-4 hover:bg-blue-800"
             onClick={() => setIsMenuOpen(false)}
           >
             Mars Rover
           </Link>
           <Link
             to="/neo-tracker"
-            className="block py-2 px-4 hover:bg-blue-700"
+            className="block py-2 px-4 hover:bg-blue-800"
             onClick={() => setIsMenuOpen(false)}
           >
             NEO Tracker
           </Link>
           <Link
             to="/earth-imagery"
-            className="block py-2 px-4 hover:bg-blue-700"
+            className="block py-2 px-4 hover:bg-blue-800"
             onClick={() => setIsMenuOpen(false)}
           >
             Earth Imagery
           </Link>
           <button
             onClick={toggleTheme}
-            className="w-full text-left py-2 px-4 hover:bg-blue-700"
+            className="w-full text-left py-2 px-4 hover:bg-blue-800"
           >
             {theme === "dark"
               ? "Switch to Light Mode ☀️"
