@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNasaApi } from "./useNasaApi";
 import { APODItem } from "../types/APODItem";
 
@@ -19,14 +19,16 @@ export const useAPODGallery = (count: number = 20) => {
     thumbs: "true",
   });
 
-  if (data && !loading && !allItems.some((item) => data.includes(item))) {
-    setAllItems((prevItems) => {
-      const combinedItems = [...prevItems, ...data];
-      return Array.from(
-        new Map(combinedItems.map((item) => [item.date, item])).values()
-      ).sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
-    });
-  }
+  useEffect(() => {
+    if (data && !loading) {
+      setAllItems((prevItems) => {
+        const combinedItems = [...prevItems, ...data];
+        return Array.from(
+          new Map(combinedItems.map((item) => [item.date, item])).values()
+        ).sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+      });
+    }
+  }, [data, loading]);
 
   const loadMore = () => {
     setPage((prev) => prev + 1);
