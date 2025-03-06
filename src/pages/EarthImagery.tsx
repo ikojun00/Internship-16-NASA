@@ -1,20 +1,157 @@
-// pages/EarthImagery.tsx
-import { useTheme } from "../contexts/ThemeContext";
+import { useState } from "react";
+import { MapContainer, TileLayer, useMapEvents, Marker } from "react-leaflet";
+import "leaflet/dist/leaflet.css";
+import L from "leaflet";
+import markerIcon from "leaflet/dist/images/marker-icon.png";
+import markerIcon2x from "leaflet/dist/images/marker-icon-2x.png";
+import markerShadow from "leaflet/dist/images/marker-shadow.png";
+import { useEarthImagery } from "../services/useEarthImagery";
+import { useLocalStorage } from "../services/useLocalStorage";
+import {
+  PageContainer,
+  PageHeader,
+  FormInput,
+  Button,
+  SavedLocationItem,
+  FilterSection,
+} from "../components/UI";
 
-const EarthImagery: React.FC = () => {
-  const { theme } = useTheme();
+delete (L.Icon.Default.prototype as any)._getIconUrl;
+L.Icon.Default.mergeOptions({
+  iconRetinaUrl: markerIcon2x,
+  iconUrl: markerIcon,
+  shadowUrl: markerShadow,
+});
+
+const MapClickHandler = ({ onClick }: { onClick: (e: any) => void }) => {
+  useMapEvents({ click: onClick });
+  return null;
+};
+
+const EarthImagery = () => {
+  const [selectedLocation, setSelectedLocation] = useState<{
+    lat: number;
+    lon: number;
+  } | null>(null);
+
+  const [selectedDate, setSelectedDate] = useState<string>(
+    new Date().toISOString().split("T")[0]
+  );
+
+  const { data, loading, error } = useEarthImagery(
+    selectedLocation?.lat || null,
+    selectedLocation?.lon || null,
+    selectedDate
+  );
+
+  const [favorites, setFavorites] = useLocalStorage<
+    Array<{ lat: number; lon: number; name: string }>
+  >("earthImageryFavorites", []);
+
+  const handleMapClick = (e: any) => {
+    setSelectedLocation({ lat: e.latlng.lat, lon: e.latlng.lng });
+  };
+
+  const handleAddFavorite = () => {
+    if (!selectedLocation) return;
+    const name = prompt("Enter a name for this location:");
+    if (name) setFavorites([...favorites, { ...selectedLocation, name }]);
+  };
+
+  const handleDeleteFavorite = (index: number) => {
+    const updatedFavorites = favorites.filter((_, i) => i !== index);
+    setFavorites(updatedFavorites);
+  };
+
+  const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSelectedDate(e.target.value);
+  };
 
   return (
-    <div className="flex flex-col items-center">
-      <h1
-        className={`text-3xl font-bold mb-8 ${
-          theme === "dark" ? "text-white" : "text-gray-800"
-        }`}
-      >
-        Earth Imagery
-      </h1>
-      {/* Only implementing the title as requested */}
-    </div>
+    <PageContainer>
+      <PageHeader title="Earth Imagery" />
+
+      <FilterSection>
+        <FormInput
+          id="earth-date"
+          type="date"
+          label="Date"
+          value={selectedDate}
+          onChange={handleDateChange}
+        />
+      </FilterSection>
+
+      <div className="h-96 flex flex-col md:flex-row gap-4 mb-6">
+        <div
+          className={`flex flex-col items-center ${
+            data?.url ? "flex-grow" : "w-full"
+          }`}
+        >
+          <MapContainer
+            center={[50, 20]}
+            zoom={3}
+            className="h-full w-full rounded-lg shadow-lg z-0"
+          >
+            <TileLayer
+              url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+              attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            />
+            <MapClickHandler onClick={handleMapClick} />
+            {selectedLocation && (
+              <Marker position={[selectedLocation.lat, selectedLocation.lon]} />
+            )}
+          </MapContainer>
+        </div>
+
+        {data?.url && (
+          <div className="flex flex-col">
+            {loading && (
+              <div className="text-center p-4">
+                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500"></div>
+              </div>
+            )}
+
+            {error && (
+              <div className="p-4 bg-red-100 text-red-700 rounded">
+                Error: {error.message}
+              </div>
+            )}
+
+            {data?.url && (
+              <img
+                src={data.url}
+                alt="Satellite"
+                className="rounded-lg shadow-lg w-full max-h-96 object-contain"
+              />
+            )}
+          </div>
+        )}
+      </div>
+
+      <div className="flex justify-center mt-4 mb-8">
+        <Button onClick={handleAddFavorite} disabled={!selectedLocation}>
+          Add to Favorites
+        </Button>
+      </div>
+
+      <div>
+        <h2 className="text-xl font-bold my-4">Saved Locations</h2>
+        {favorites.length === 0 ? (
+          <p>No saved locations yet. Click on the map to select a location.</p>
+        ) : (
+          <ul>
+            {favorites.map((fav, index) => (
+              <SavedLocationItem
+                key={index}
+                name={fav.name}
+                onView={() => setSelectedLocation(fav)}
+                onDelete={() => handleDeleteFavorite(index)}
+              />
+            ))}
+          </ul>
+        )}
+      </div>
+    </PageContainer>
   );
 };
 
