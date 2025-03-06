@@ -1,9 +1,8 @@
-// pages/NotFound.tsx
 import { Link } from "react-router-dom";
 import { useTheme } from "../contexts/ThemeContext";
 
 const NotFound: React.FC = () => {
-  const { theme } = useTheme();
+  const { themeClasses } = useTheme();
 
   return (
     <div className="flex flex-col items-center justify-center text-center gap-8">
@@ -16,11 +15,7 @@ const NotFound: React.FC = () => {
       </p>
       <Link
         to="/"
-        className={`px-6 py-3 rounded-full text-white font-medium ${
-          theme === "dark"
-            ? "bg-blue-600 hover:bg-blue-700"
-            : "bg-blue-700 hover:bg-blue-800"
-        }`}
+        className={`px-6 py-3 rounded-full text-white font-medium ${themeClasses.button}`}
       >
         Return to Mission Control
       </Link>

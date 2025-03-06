@@ -3,51 +3,34 @@ import { useParams, Link } from "react-router-dom";
 import { useTheme } from "../../contexts/ThemeContext";
 import withLoading from "../../hoc/withLoading";
 import { useAPODByDate } from "../../services/useAPOD";
+import {
+  PageContainer,
+  PageHeader,
+  Card,
+  LeftArrow,
+} from "../../components/UI";
 
 const APODDetails: React.FC = () => {
   const { date } = useParams<{ date: string }>();
-  const { theme } = useTheme();
+  const { themeClasses } = useTheme();
   const { data, loading, error } = useAPODByDate(date || "");
-
-  const themeClasses = {
-    container: theme === "dark" ? "bg-gray-900" : "bg-white",
-    text: theme === "dark" ? "text-white" : "text-gray-800",
-    secondaryText: theme === "dark" ? "text-gray-300" : "text-gray-600",
-    link:
-      theme === "dark"
-        ? "text-blue-400 hover:text-blue-300"
-        : "text-blue-600 hover:text-blue-800",
-  };
 
   const DetailContent = () => {
     if (!data) return null;
 
     return (
-      <div className={`min-h-screen mb-16 ${themeClasses.container}`}>
+      <PageContainer>
+        <Link
+          to="/apod"
+          className="flex items-center font-medium mb-4 text-blue-500"
+        >
+          <LeftArrow />
+          Back to Gallery
+        </Link>
+
+        <PageHeader title={data.title} />
+
         <div className="flex flex-col gap-4 max-w-4xl mx-auto">
-          <Link
-            to="/apod"
-            className={`inline-flex items-center font-medium ${themeClasses.link}`}
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-5 w-5 mr-2"
-              viewBox="0 0 20 20"
-              fill="currentColor"
-            >
-              <path
-                fillRule="evenodd"
-                d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z"
-                clipRule="evenodd"
-              />
-            </svg>
-            Back to Gallery
-          </Link>
-
-          <h1 className={`text-3xl font-bold ${themeClasses.text}`}>
-            {data.title}
-          </h1>
-
           <div className={`${themeClasses.secondaryText}`}>
             <span className="font-medium">Date:</span>{" "}
             {new Date(data.date).toLocaleDateString()}
@@ -89,16 +72,17 @@ const APODDetails: React.FC = () => {
             )}
           </div>
 
-          <div className={themeClasses.text}>
-            <p>{data.explanation}</p>
-          </div>
+          <Card>
+            <div className={themeClasses.text}>
+              <p>{data.explanation}</p>
+            </div>
+          </Card>
         </div>
-      </div>
+      </PageContainer>
     );
   };
 
   const DetailsWithLoading = withLoading(DetailContent);
-
   return <DetailsWithLoading loading={loading} error={error} />;
 };
 
