@@ -35,7 +35,7 @@ const NEOTracker: React.FC = () => {
     [startDate]
   );
 
-  const { data } = useNEOTracker(startDate, endDate);
+  const { data, loading, error } = useNEOTracker(startDate, endDate);
 
   const processedNEOData = useMemo(() => {
     if (!data) return [];
@@ -66,7 +66,7 @@ const NEOTracker: React.FC = () => {
     setStartDate(e.target.value);
   };
 
-  return (
+  const NEOTrackerContent = () => (
     <PageContainer>
       <PageHeader title="Near Earth Objects (NEO) Tracker" />
 
@@ -168,8 +168,15 @@ const NEOTracker: React.FC = () => {
       </div>
     </PageContainer>
   );
-};
 
-export const NEOTrackerWithLoading = withLoading(NEOTracker);
+  const NEOTrackerWithLoading = withLoading(NEOTrackerContent);
+  
+  return (
+    <NEOTrackerWithLoading 
+      loading={loading} 
+      error={error} 
+    />
+  );
+};
 
 export default NEOTracker;

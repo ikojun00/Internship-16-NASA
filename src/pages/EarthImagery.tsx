@@ -7,6 +7,7 @@ import markerIcon2x from "leaflet/dist/images/marker-icon-2x.png";
 import markerShadow from "leaflet/dist/images/marker-shadow.png";
 import { useEarthImagery } from "../services/useEarthImagery";
 import { useLocalStorage } from "../services/useLocalStorage";
+import withLoading from "../hoc/withLoading";
 import {
   PageContainer,
   PageHeader,
@@ -67,7 +68,7 @@ const EarthImagery = () => {
     setSelectedDate(e.target.value);
   };
 
-  return (
+  const EarthImageryContent = () => (
     <PageContainer>
       <PageHeader title="Earth Imagery" />
 
@@ -105,25 +106,11 @@ const EarthImagery = () => {
 
         {data?.url && (
           <div className="flex flex-col">
-            {loading && (
-              <div className="text-center p-4">
-                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500"></div>
-              </div>
-            )}
-
-            {error && (
-              <div className="p-4 bg-red-100 text-red-700 rounded">
-                Error: {error.message}
-              </div>
-            )}
-
-            {data?.url && (
-              <img
-                src={data.url}
-                alt="Satellite"
-                className="rounded-lg shadow-lg w-full max-h-96 object-contain"
-              />
-            )}
+            <img
+              src={data.url}
+              alt="Satellite"
+              className="rounded-lg shadow-lg w-full max-h-96 object-contain"
+            />
           </div>
         )}
       </div>
@@ -152,6 +139,15 @@ const EarthImagery = () => {
         )}
       </div>
     </PageContainer>
+  );
+
+  const EarthImageryWithLoading = withLoading(EarthImageryContent);
+  
+  return (
+    <EarthImageryWithLoading 
+      loading={loading && !data} 
+      error={error} 
+    />
   );
 };
 
