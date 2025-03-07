@@ -8,7 +8,7 @@ interface FormInputProps {
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-export const FormInput: React.FC<FormInputProps> = ({
+const FormInput: React.FC<FormInputProps> = ({
   label,
   id,
   type,
@@ -35,3 +35,5 @@ export const FormInput: React.FC<FormInputProps> = ({
     </div>
   );
 };
+
+export default FormInput;

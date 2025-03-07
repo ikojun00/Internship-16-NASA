@@ -6,8 +6,8 @@ import { useTheme } from "../../contexts/ThemeContext";
 import PageContainer from "../../components/UI/Page/PageContainer";
 import PageHeader from "../../components/UI/Page/PageHeader";
 import FilterSection from "../../components/UI/FilterSection";
-import { FormInput } from "../../components/UI/Form/FormInput";
-import { EmptyState } from "../../components/UI/EmptyState";
+import FormInput from "../../components/UI/Form/FormInput";
+import EmptyState from "../../components/UI/EmptyState";
 
 const APOD: React.FC = () => {
   const { items, loading, error, loadMore, hasMore } = useAPODGallery();

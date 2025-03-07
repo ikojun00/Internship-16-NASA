@@ -9,7 +9,6 @@ export const useMarsRoverPhotos = ({
   page = 1,
 }: UseMarsRoverPhotosProps) => {
   const [photos, setPhotos] = useState<MarsPhoto[]>([]);
-  const [hasMore, setHasMore] = useState(true);
 
   const endpoint = `/mars-photos/api/v1/rovers/${rover}/photos`;
   const params: Record<string, string> = { page: page.toString() };
@@ -25,14 +24,11 @@ export const useMarsRoverPhotos = ({
 
   useEffect(() => {
     if (data?.photos) {
-      setPhotos((prev) =>
-        page === 1 ? data.photos : [...prev, ...data.photos]
-      );
-      setHasMore(data.photos.length > 0);
+      setPhotos(data.photos);
     }
-  }, [data, page]);
+  }, [data]);
 
-  return { photos, loading, error, hasMore };
+  return { photos, loading, error };
 };
 
 export const useMarsPhoto = (id: string) => {

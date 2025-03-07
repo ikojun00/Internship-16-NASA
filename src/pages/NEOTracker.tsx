@@ -16,7 +16,7 @@ import { useTheme } from "../contexts/ThemeContext";
 import PageContainer from "../components/UI/Page/PageContainer";
 import PageHeader from "../components/UI/Page/PageHeader";
 import FilterSection from "../components/UI/FilterSection";
-import { FormInput } from "../components/UI/Form/FormInput";
+import FormInput from "../components/UI/Form/FormInput";
 import Card from "../components/UI/Card/Card";
 import Table from "../components/UI/Table/Table";
 import TableHead from "../components/UI/Table/TableHead";

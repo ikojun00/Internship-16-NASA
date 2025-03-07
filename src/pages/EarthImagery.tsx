@@ -11,10 +11,9 @@ import withLoading from "../hoc/withLoading";
 import PageContainer from "../components/UI/Page/PageContainer";
 import PageHeader from "../components/UI/Page/PageHeader";
 import FilterSection from "../components/UI/FilterSection";
-import { FormInput } from "../components/UI/Form/FormInput";
+import FormInput from "../components/UI/Form/FormInput";
 import Button from "../components/UI/Button/Button";
 import SavedLocationItem from "../components/UI/SavedLocationItem";
-
 
 delete (L.Icon.Default.prototype as any)._getIconUrl;
 L.Icon.Default.mergeOptions({
@@ -119,7 +118,11 @@ const EarthImagery = () => {
       </div>
 
       <div className="flex justify-center mt-4 mb-8">
-        <Button onClick={handleAddFavorite} disabled={!selectedLocation}>
+        <Button
+          onClick={handleAddFavorite}
+          disabled={!selectedLocation}
+          className={!selectedLocation ? "cursor-not-allowed" : ""}
+        >
           Add to Favorites
         </Button>
       </div>

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import MarsRoverCard from "../../components/UI/Card/MarsRoverCard";
 import { useMarsRoverPhotos } from "../../services/useMarsRover";
 import withLoading from "../../hoc/withLoading";
@@ -7,9 +7,9 @@ import PageContainer from "../../components/UI/Page/PageContainer";
 import PageHeader from "../../components/UI/Page/PageHeader";
 import FilterSection from "../../components/UI/FilterSection";
 import FormSelect from "../../components/UI/Form/FormSelect";
-import { FormInput } from "../../components/UI/Form/FormInput";
-import { EmptyState } from "../../components/UI/EmptyState";
-import LoadMoreButton from "../../components/UI/Button/LoadMoreButton";
+import FormInput from "../../components/UI/Form/FormInput";
+import EmptyState from "../../components/UI/EmptyState";
+import Pagination from "../../components/UI/Pagination";
 
 const rovers = ["Curiosity", "Opportunity", "Spirit"];
 const cameras = ["FHAZ", "RHAZ", "NAVCAM"];
@@ -19,16 +19,38 @@ const MarsRover: React.FC = () => {
   const [selectedCamera, setSelectedCamera] = useState("");
   const [selectedDate, setSelectedDate] = useState("2015-06-03");
   const [page, setPage] = useState(1);
+  const [disableNext, setDisableNext] = useState(false);
   const { theme } = useTheme();
 
-  const { photos, loading, error, hasMore } = useMarsRoverPhotos({
+  const { photos, loading, error } = useMarsRoverPhotos({
     rover: selectedRover.toLowerCase(),
     earth_date: selectedDate,
-    camera: selectedCamera,
+    camera: selectedCamera.toLowerCase() || undefined,
     page,
   });
 
-  const handleLoadMore = () => setPage((prev) => prev + 1);
+  const { photos: nextPagePhotos, loading: nextPageLoading } = useMarsRoverPhotos({
+    rover: selectedRover.toLowerCase(),
+    earth_date: selectedDate,
+    camera: selectedCamera.toLowerCase() || undefined,
+    page: page + 1,
+  });
+
+  useEffect(() => {
+    if (!nextPageLoading) {
+      setDisableNext(nextPagePhotos.length === 0);
+    }
+  }, [nextPagePhotos, nextPageLoading]);
+
+  useEffect(() => {
+    setPage(1);
+    setDisableNext(false);
+  }, [selectedRover, selectedCamera, selectedDate]);
+
+  const handlePageChange = (newPage: number) => {
+    setPage(newPage);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
 
   const roverOptions = rovers.map((rover) => ({ value: rover, label: rover }));
   const cameraOptions = [
@@ -47,7 +69,6 @@ const MarsRover: React.FC = () => {
           value={selectedRover}
           onChange={(e) => {
             setSelectedRover(e.target.value);
-            setPage(1);
           }}
           options={roverOptions}
         />
@@ -58,7 +79,6 @@ const MarsRover: React.FC = () => {
           value={selectedCamera}
           onChange={(e) => {
             setSelectedCamera(e.target.value);
-            setPage(1);
           }}
           options={cameraOptions}
         />
@@ -72,7 +92,7 @@ const MarsRover: React.FC = () => {
         />
       </FilterSection>
 
-      {photos.length === 0 ? (
+      {photos.length === 0 && !loading ? (
         <EmptyState
           message="No rover photos found for the selected filters."
           icon="🤖"
@@ -80,12 +100,25 @@ const MarsRover: React.FC = () => {
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-7xl mx-auto">
           {photos.map((photo) => (
-            <MarsRoverCard key={photo.id} photo={photo} theme={theme} />
+            <MarsRoverCard
+              key={photo.id}
+              photo={photo}
+              theme={theme}
+            />
           ))}
         </div>
       )}
 
-      {hasMore && <LoadMoreButton onClick={handleLoadMore} loading={loading} />}
+      {photos.length > 0 && (
+        <div className="mt-8">
+          <Pagination 
+            currentPage={page}
+            onPageChange={handlePageChange}
+            disableNext={disableNext}
+            loading={loading}
+          />
+        </div>
+      )}
     </PageContainer>
   ));
 

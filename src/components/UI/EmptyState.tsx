@@ -1,7 +1,7 @@
 import { ReactNode } from "react";
 import { useTheme } from "../../contexts/ThemeContext";
 
-export const EmptyState: React.FC<{
+const EmptyState: React.FC<{
   message: string;
   icon?: ReactNode;
 }> = ({ message, icon }) => {
@@ -14,3 +14,5 @@ export const EmptyState: React.FC<{
     </div>
   );
 };
+
+export default EmptyState;
