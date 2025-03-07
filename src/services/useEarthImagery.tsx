@@ -15,6 +15,8 @@ export const useEarthImagery = (
   lon: number | null,
   date: string | null
 ) => {
+  const shouldFetch = lat !== null && lon !== null && date !== null;
+  
   const params: Record<string, string> = {};
   
   if (lat !== null) params.lat = lat.toString();
@@ -22,10 +24,9 @@ export const useEarthImagery = (
   if (date !== null) params.date = date;
   if (lat !== null && lon !== null) params.dim = "0.15";
 
-  const shouldFetch = lat !== null && lon !== null && date !== null;
-  
   return useNasaApi<EarthImageryResponse>(
     "/planetary/earth/assets",
-    shouldFetch ? params : { skip: "true" }
+    params,
+    shouldFetch
   );
 };

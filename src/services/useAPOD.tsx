@@ -17,7 +17,7 @@ export const useAPODGallery = (count: number = 20) => {
     start_date: start,
     end_date: endDate,
     thumbs: "true",
-  });
+  }, true);
 
   useEffect(() => {
     if (data && !loading) {
@@ -44,5 +44,5 @@ export const useAPODGallery = (count: number = 20) => {
 };
 
 export const useAPODByDate = (date: string) => {
-  return useNasaApi<APODItem>("/planetary/apod", { date });
+  return useNasaApi<APODItem>("/planetary/apod", { date }, true);
 };

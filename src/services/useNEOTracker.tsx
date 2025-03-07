@@ -7,5 +7,5 @@ export const useNEOTracker = (startDate: string, endDate: string) => {
     end_date: endDate,
   };
 
-  return useNasaApi<NEOResponse>("/neo/rest/v1/feed", params);
+  return useNasaApi<NEOResponse>("/neo/rest/v1/feed", params, true);
 };

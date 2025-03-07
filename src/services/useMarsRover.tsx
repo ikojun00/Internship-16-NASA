@@ -19,7 +19,8 @@ export const useMarsRoverPhotos = ({
 
   const { data, loading, error } = useNasaApi<{ photos: MarsPhoto[] }>(
     endpoint,
-    params
+    params,
+    true
   );
 
   useEffect(() => {
@@ -36,7 +37,9 @@ export const useMarsRoverPhotos = ({
 
 export const useMarsPhoto = (id: string) => {
   const { data, loading, error } = useNasaApi<{ photo: MarsPhoto }>(
-    `/mars-photos/api/v1/photos/${id}`
+    `/mars-photos/api/v1/photos/${id}`,
+    {},
+    true
   );
 
   return {

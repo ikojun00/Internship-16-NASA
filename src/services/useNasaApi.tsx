@@ -24,15 +24,21 @@ const fetchFromNasa = async <T,>(url: string): Promise<T> => {
 
 export const useNasaApi = <T,>(
   endpoint: string,
-  params: Record<string, string> = {}
+  params: Record<string, string> = {},
+  shouldFetch: boolean = true
 ): ApiResponse<T> => {
   const [state, setState] = useState<ApiResponse<T>>({
     data: null,
-    loading: true,
+    loading: shouldFetch,
     error: null,
   });
 
   useEffect(() => {
+    if (!shouldFetch) {
+      setState({ data: null, loading: false, error: null });
+      return;
+    }
+
     const fetchData = async () => {
       setState((prev) => ({ ...prev, loading: true }));
 
@@ -57,7 +63,7 @@ export const useNasaApi = <T,>(
     };
 
     fetchData();
-  }, [endpoint, JSON.stringify(params)]);
+  }, [endpoint, JSON.stringify(params), shouldFetch]);
 
   return state;
 };
