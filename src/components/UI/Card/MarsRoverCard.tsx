@@ -1,13 +1,8 @@
 import { Link } from "react-router-dom";
+import { MarsPhoto } from "../../../types/MarsRoverTypes";
 
 interface MarsRoverCardProps {
-  photo: {
-    id: number;
-    img_src: string;
-    earth_date: string;
-    camera: { full_name: string };
-    rover: { name: string };
-  };
+  photo: MarsPhoto;
   theme: "light" | "dark";
 }
 

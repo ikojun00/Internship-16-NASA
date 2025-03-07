@@ -1,21 +1,20 @@
 import { useState } from "react";
 import { MapContainer, TileLayer, useMapEvents, Marker } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
-import L from "leaflet";
+import L, { LeafletMouseEvent } from "leaflet";
 import markerIcon from "leaflet/dist/images/marker-icon.png";
 import markerIcon2x from "leaflet/dist/images/marker-icon-2x.png";
 import markerShadow from "leaflet/dist/images/marker-shadow.png";
 import { useEarthImagery } from "../services/useEarthImagery";
 import { useLocalStorage } from "../services/useLocalStorage";
 import withLoading from "../hoc/withLoading";
-import {
-  PageContainer,
-  PageHeader,
-  FormInput,
-  Button,
-  SavedLocationItem,
-  FilterSection,
-} from "../components/UI";
+import PageContainer from "../components/UI/Page/PageContainer";
+import PageHeader from "../components/UI/Page/PageHeader";
+import FilterSection from "../components/UI/FilterSection";
+import { FormInput } from "../components/UI/Form/FormInput";
+import Button from "../components/UI/Button/Button";
+import SavedLocationItem from "../components/UI/SavedLocationItem";
+
 
 delete (L.Icon.Default.prototype as any)._getIconUrl;
 L.Icon.Default.mergeOptions({
@@ -24,7 +23,11 @@ L.Icon.Default.mergeOptions({
   shadowUrl: markerShadow,
 });
 
-const MapClickHandler = ({ onClick }: { onClick: (e: any) => void }) => {
+const MapClickHandler = ({
+  onClick,
+}: {
+  onClick: (e: LeafletMouseEvent) => void;
+}) => {
   useMapEvents({ click: onClick });
   return null;
 };
@@ -49,7 +52,7 @@ const EarthImagery = () => {
     Array<{ lat: number; lon: number; name: string }>
   >("earthImageryFavorites", []);
 
-  const handleMapClick = (e: any) => {
+  const handleMapClick = (e: LeafletMouseEvent) => {
     setSelectedLocation({ lat: e.latlng.lat, lon: e.latlng.lng });
   };
 
@@ -142,13 +145,8 @@ const EarthImagery = () => {
   );
 
   const EarthImageryWithLoading = withLoading(EarthImageryContent);
-  
-  return (
-    <EarthImageryWithLoading 
-      loading={loading && !data} 
-      error={error} 
-    />
-  );
+
+  return <EarthImageryWithLoading loading={loading && !data} error={error} />;
 };
 
 export default EarthImagery;

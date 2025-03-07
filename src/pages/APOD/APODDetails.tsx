@@ -3,12 +3,10 @@ import { useParams, Link } from "react-router-dom";
 import { useTheme } from "../../contexts/ThemeContext";
 import withLoading from "../../hoc/withLoading";
 import { useAPODByDate } from "../../services/useAPOD";
-import {
-  PageContainer,
-  PageHeader,
-  Card,
-  LeftArrow,
-} from "../../components/UI";
+import PageContainer from "../../components/UI/Page/PageContainer";
+import LeftArrow from "../../components/UI/LeftArrow";
+import PageHeader from "../../components/UI/Page/PageHeader";
+import Card from "../../components/UI/Card/Card";
 
 const APODDetails: React.FC = () => {
   const { date } = useParams<{ date: string }>();
@@ -30,7 +28,7 @@ const APODDetails: React.FC = () => {
 
         <PageHeader title={data.title} />
 
-        <div className="flex flex-col gap-4 max-w-4xl mx-auto">
+        <div className="flex flex-col gap-4">
           <div className={`${themeClasses.secondaryText}`}>
             <span className="font-medium">Date:</span>{" "}
             {new Date(data.date).toLocaleDateString()}

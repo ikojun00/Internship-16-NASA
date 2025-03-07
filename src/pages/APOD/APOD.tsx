@@ -1,15 +1,13 @@
 import React, { useRef, useCallback, useState } from "react";
 import { useAPODGallery } from "../../services/useAPOD";
-import APODCard from "../../components/APOD/APODCard";
+import APODCard from "../../components/UI/Card/APODCard";
 import withLoading from "../../hoc/withLoading";
 import { useTheme } from "../../contexts/ThemeContext";
-import {
-  PageContainer,
-  PageHeader,
-  FilterSection,
-  FormInput,
-  EmptyState,
-} from "../../components/UI";
+import PageContainer from "../../components/UI/Page/PageContainer";
+import PageHeader from "../../components/UI/Page/PageHeader";
+import FilterSection from "../../components/UI/FilterSection";
+import { FormInput } from "../../components/UI/Form/FormInput";
+import { EmptyState } from "../../components/UI/EmptyState";
 
 const APOD: React.FC = () => {
   const { items, loading, error, loadMore, hasMore } = useAPODGallery();

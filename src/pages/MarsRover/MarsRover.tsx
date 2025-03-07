@@ -1,17 +1,15 @@
 import React, { useState } from "react";
-import MarsRoverCard from "../../components/MarsRover/MarsRoverCard";
+import MarsRoverCard from "../../components/UI/Card/MarsRoverCard";
 import { useMarsRoverPhotos } from "../../services/useMarsRover";
 import withLoading from "../../hoc/withLoading";
-import {
-  PageContainer,
-  PageHeader,
-  FilterSection,
-  FormSelect,
-  FormInput,
-  EmptyState,
-  LoadMoreButton,
-} from "../../components/UI";
 import { useTheme } from "../../contexts/ThemeContext";
+import PageContainer from "../../components/UI/Page/PageContainer";
+import PageHeader from "../../components/UI/Page/PageHeader";
+import FilterSection from "../../components/UI/FilterSection";
+import FormSelect from "../../components/UI/Form/FormSelect";
+import { FormInput } from "../../components/UI/Form/FormInput";
+import { EmptyState } from "../../components/UI/EmptyState";
+import LoadMoreButton from "../../components/UI/Button/LoadMoreButton";
 
 const rovers = ["Curiosity", "Opportunity", "Spirit"];
 const cameras = ["FHAZ", "RHAZ", "NAVCAM"];

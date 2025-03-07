@@ -2,7 +2,10 @@ import React from "react";
 import { useParams, Link } from "react-router-dom";
 import withLoading from "../../hoc/withLoading";
 import { useMarsPhoto } from "../../services/useMarsRover";
-import { PageContainer, PageHeader, Card, LeftArrow } from "../../components/UI";
+import PageContainer from "../../components/UI/Page/PageContainer";
+import LeftArrow from "../../components/UI/LeftArrow";
+import PageHeader from "../../components/UI/Page/PageHeader";
+import Card from "../../components/UI/Card/Card";
 
 const MarsRoverDetails: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -23,8 +26,8 @@ const MarsRoverDetails: React.FC = () => {
 
         <PageHeader title={`Mars Photo: ${photo.id}`} />
 
-        <div className="flex flex-col gap-4 max-w-4xl mx-auto">
-          <div className="mb-8">
+        <div className="flex flex-col md:flex-row gap-4">
+          <div className="w-full md:w-2/3">
             <img
               src={photo.img_src}
               alt={`Mars photo ${photo.id}`}
@@ -32,7 +35,7 @@ const MarsRoverDetails: React.FC = () => {
             />
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="grid grid-rows-1 md:grid-rows-2 gap-4 md:w-1/3">
             <Card>
               <h2 className="text-2xl font-bold mb-4">Photo Details</h2>
               <p>

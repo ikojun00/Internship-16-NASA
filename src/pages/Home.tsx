@@ -1,6 +1,6 @@
 import { useTheme } from "../contexts/ThemeContext";
-import { PageHeader } from "../components/UI";
 import satellite from "../assets/satellite.svg";
+import PageHeader from "../components/UI/Page/PageHeader";
 
 const Home: React.FC = () => {
   const { themeClasses } = useTheme();
@@ -48,8 +48,9 @@ const Home: React.FC = () => {
             description:
               "Explore satellite images of various locations on Earth",
           },
-        ].map(({ emoji, title, description }) => (
+        ].map(({ emoji, title, description }, index) => (
           <div
+            key={index}
             className={`p-6 rounded-lg ${themeClasses.card} flex flex-col items-center text-center gap-4 transition-colors duration-200`}
           >
             <span className="text-4xl">{emoji}</span>

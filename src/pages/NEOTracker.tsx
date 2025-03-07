@@ -12,20 +12,18 @@ import {
   Legend,
   ResponsiveContainer,
 } from "recharts";
-import {
-  PageContainer,
-  PageHeader,
-  FormInput,
-  Card,
-  Table,
-  TableHead,
-  TableHeadCell,
-  TableBody,
-  TableRow,
-  TableCell,
-  FilterSection,
-} from "../components/UI";
 import { useTheme } from "../contexts/ThemeContext";
+import PageContainer from "../components/UI/Page/PageContainer";
+import PageHeader from "../components/UI/Page/PageHeader";
+import FilterSection from "../components/UI/FilterSection";
+import { FormInput } from "../components/UI/Form/FormInput";
+import Card from "../components/UI/Card/Card";
+import Table from "../components/UI/Table/Table";
+import TableHead from "../components/UI/Table/TableHead";
+import TableHeadCell from "../components/UI/Table/TableHeadCell";
+import TableBody from "../components/UI/Table/TableBody";
+import TableRow from "../components/UI/Table/TableRow";
+import TableCell from "../components/UI/Table/TableCell";
 
 const NEOTracker: React.FC = () => {
   const { theme } = useTheme();

@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
+import { APODItem } from "../../../types/APODItem";
 
-const APODCard: React.FC<{ item: any; theme: "light" | "dark" }> = ({
+const APODCard: React.FC<{ item: APODItem; theme: "light" | "dark" }> = ({
   item,
   theme,
 }) => {
